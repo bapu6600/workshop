@@ -1,0 +1,53 @@
+FROM centos
+RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
+RUN sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
+RUN yum install -y vim
+RUN touch /tmp/idream
+
+====
+Exmple:2
+============
+FROM centos
+RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
+RUN sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
+RUN yum update
+RUN yum install -y vim
+RUN touch /tmp/idream
+CMD ["/bin/bash"]
+   
+Example 3:
+=================
+FROM centos
+RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
+RUN sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
+RUN yum update -y
+RUN yum install -y vim
+RUN touch /tmp/idream
+ENTRYPOINT ["echo","hi idream"]
+	
+=====================
+example 4:
+------------------
+FROM centos
+RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
+RUN sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
+RUN yum update -y
+RUN yum install -y vim
+RUN touch /tmp/idream
+ENV JAVA_HOME /opt/java
+ENV MYCOM idream
+
+====================
+example 5:
+======================
+FROM centos
+RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
+RUN sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
+RUN touch dummy
+WORKDIR /tmp
+RUN touch file1
+WORKDIR /etc
+
+
+the default folder will be etc ,1st dummy will create and then it will go to
+/tmp working dr and it will create file1 and again it will chnage defult dir to /etc

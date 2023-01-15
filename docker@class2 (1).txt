@@ -1,0 +1,99 @@
+Docker Volume
+Bind Mount
+Docker Storage
+====================
+PORT MAPPING
+====================
+docker run --name test -it -p <hostport>:<conatinerport> centos
+
+docker run -p 80:80 ubuntu 
+docker run -p 8081:8080 -p 8082:7001 ubuntu
+
+how to check the is free or not
+--------------------------------
+netstat -an | grep 80
+
+docker run -d --name apache -p 80:80 httpd :who created the image he wrote inside the image the 1st
+                                            command to run the apache 
+
+=>docker logs -f apache :need to see what happend inside conatinr
+=>want to see inside parent os :
+    curl localhost:80
+=>access from browser:
+           ip:port
+		   
+note:httpd :it is a web server
+
+docker run -d --name nginx -p 8081:80 nginx
+               ->it should start the application automaticaly it si writen by who created the image 
+=======================
+DOCKER VOLUMES
+=========================
+if the application now we need to access the files inside conatiner ,outside of conatiner
+need to take backup
+need to check log of conatiner
+if conatiner will delete or down how to check the backup
+the folder inside conatiner will be map to the folder in host mechine 
+this should be done when u are createing the conatiner
+
+docker run -name test1 -it -v /tmp/host:/tmp/data centos bin/bash
+
+========================
+image creation
+=========================
+docker run --name test2 -it centos /bin/bash
+   =>add somthing inside this 
+   =>git
+   =>maven
+   =>java
+  =>vim
+your conatiner should run and u need to come out from that to your base OS
+save the conatiner data and convert to new image
+=>docker commit test3 newimagename
+=>run the new conatiner
+
+or
+===================
+Method 1:Creating an image from a running container
+
+**********************************************
+
+# docker run --name c1 -it centos
+	#ls
+	# yum update -y
+	# yum install git -y
+	# git --version
+	# ctlp+ctlQ
+
+# docker commit c1 mycentosImage
+
+# docker images   // our image will be available with tag as latest
+
+//Create a container from our own Image
+
+# docker run --name c2 -it mycentosImage
+	
+push our image into Docker Hub:
+
+
+# docker tag mycentosImage:latest ashis/mycentosImage:latest
+
+# docker images   // new image with new name will be created
+
+# docker login   //loginto docker hub
+Username:
+Password:
+
+# docker push dockerusername/mycentosImage:latest   //image will be pushed to docker hub
+
+
+==================
+Centos soluation
+========================
+Go to the /etc/yum.repos.d/ directory.
+cd /etc/yum.repos.d/
+Run the below commands to hash the mirror-list in all yum.repos.d files then replace the existed Baseurl with the vault.centos.org
+sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
+sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
+Then run yum update or install any package you want
+yum update -y

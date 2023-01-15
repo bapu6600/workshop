@@ -1,0 +1,100 @@
+sudo docker run --name mytomcat -d -p 8083:8080 tomcat
+sudo docker exec -it mytomcat /bin/bash
+
+copy webapps.dist to webapps 
+
+
+sudo docker container list
+
+Docker provides a single command that will clean up any resources — images, containers, 
+volumes, and networks — that are dangling (not tagged or associated with a container)
+
+=>docker system prune
+
+To additionally remove any stopped containers and all unused images 
+(not just dangling images), add the -a flag to the command:
+
+=>docker system prune -a
+
+Remove one or more specific images
+
+docker images -a
+docker rmi Image Image
+
+Remove dangling images
+
+docker images -f dangling=true
+
+==================
+sudo docker build -t myimage3 . -f /home/ec2-user/mydocker/Dockerfile1
+
+==========================================
+
+https://tomcat.apache.org/tomcat-7.0-doc/appdev/sample/sample.war
+
+ADD
+COPY
+==========
+CMD => overwrite
+ENTERPOINT => append
+==========
+file =>hi,by
+file =>by
+--------------
+FROM centos
+ENTRYPOINT ["bin/bash"]
+ENTRYPOINT ["echo","hi idream"]
+
+docker build -t myimage3 . -f /root/docker/myfile1
+docker run -it myimage3 by tc
+
+
+===============================
+###
+# cd into directory containing 'Dockerfile'
+
+### dockerfile
+
+cat Dockerfile
+FROM ubuntu:12.04
+
+# Install dependencies
+RUN apt-get update -y
+RUN apt-get install -y git curl apache2 php5 libapache2-mod-php5 php5-mcrypt php5-mysql
+
+# Install app
+RUN rm -rf /var/www/*
+ADD src /var/www
+
+# Configure apache
+RUN a2enmod rewrite
+RUN chown -R www-data:www-data /var/www
+ENV APACHE_RUN_USER www-data
+ENV APACHE_RUN_GROUP www-data
+ENV APACHE_LOG_DIR /var/log/apache2
+
+EXPOSE 80
+
+CMD ["/usr/sbin/apache2", "-D",  "FOREGROUND"]
+
+### build image from dockerfile
+docker build -t my-dockerhub-username/amazon-ecs-sample .
+
+### check image has been built
+$ docker images
+REPOSITORY                                TAG                 IMAGE ID            CREATED             VIRTUAL SIZE
+my-dockerhub-username/amazon-ecs-sample   latest              43c52559a0a1        12 minutes ago      258.1 MB
+ubuntu                                    12.04               78cef618c77e        3 weeks ago         133.7 MB
+
+
+### run container and map exposed port 80 to port 80 of host
+docker run -p 80:80 my-dockerhub-username/amazon-ecs-sample
+# The container can be stopped by hitting Ctrl-C
+
+### Upload container into Docker Hub account
+# Log in to your Docker Hub account
+docker login
+# Verify that you have logged in correctly (You should see "Username: my-dockerhub-username" in the output)
+docker info
+# Push the image
+docker push my-dockerhub-username/amazon-ecs-sample
